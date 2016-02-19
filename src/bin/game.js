@@ -12,6 +12,7 @@ export class Game {
         this.ticker.autoStart = false; //WTF doesn't work ?
         this.ticker.stop();
         this.stopped = true;
+        this.stage = null;
         this.window = {
             width: windowWidth,
             height: windowHeight
@@ -42,34 +43,42 @@ export class Game {
 
     checkBordersCollision (object) {
 
-        if (object.y - object.hitbox.height < 0) {
-            object.y = object.hitbox.height;
+        let hitbox = object.getHitbox();
+
+        if (hitbox.y < 0) {
+            object.y = object.pivot.y;
         }
 
-        if (object.y + object.hitbox.height > this.window.height) {
-            object.y = this.window.height - object.hitbox.height;
+        if (hitbox.x < 0) {
+            object.x = object.pivot.x;
         }
 
-        if (object.x + object.hitbox.width > this.window.width) {
-            object.x = this.window.width - object.hitbox.width;
+        if (hitbox.y + hitbox.height > this.window.height) {
+            object.y = this.window.height - hitbox.height + object.pivot.y;
         }
 
-        if (object.x - object.hitbox.width < 0) {
-            object.x = object.hitbox.width;
+        if (hitbox.x + hitbox.width > this.window.width) {
+            object.x = this.window.width - hitbox.width + object.pivot.x;
         }
     }
 
     hasCollisionBetweenObjects (object1, objects) {
+
+        let object1Hitbox = object1.getHitbox();
+        let object2Hitbox = null;
 
         if (!Array.isArray(objects)) {
             objects = [objects];
         }
 
         for (let object2 of objects) {
-            if ((object1.x - object1.pivot.x) <= (object2.x - object2.pivot.x) + object2.hitbox.width &&
-                ((object1.x - object1.pivot.x) + object1.hitbox.width) >= (object2.x - object2.pivot.x) &&
-                (object1.y - object1.pivot.y) <= ((object2.y -object2.pivot.y) + object2.hitbox.height) &&
-                ((object1.y - object1.pivot.y) + object1.hitbox.height) >= (object2.y -object2.pivot.y)
+
+            object2Hitbox = object2.getHitbox();
+
+            if (object2Hitbox.contains(object1Hitbox.x, object1Hitbox.y) ||
+                object2Hitbox.contains(object1Hitbox.x + object1Hitbox.width, object1Hitbox.y) ||
+                object2Hitbox.contains(object1Hitbox.x, object1Hitbox.y + object1Hitbox.height) ||
+                object2Hitbox.contains(object1Hitbox.x + object1Hitbox.width, object1Hitbox.y + object1Hitbox.height)
             ) {
                 return object2;
             }
@@ -80,19 +89,21 @@ export class Game {
 
     isVisible (object) {
 
-        if (object.y - object.hitbox.height < 0) {
+        let hitbox = object.getHitbox();
+
+        if (hitbox.y < 0) {
             return false;
         }
 
-        if (object.y + object.hitbox.height > this.window.height) {
+        if (hitbox.x < 0) {
+            return false;
+        }
+
+        if (hitbox.y + hitbox.height > this.window.height) {
             return false
         }
 
-        if (object.x + object.hitbox.width > this.window.width) {
-            return false;
-        }
-
-        if (object.x - object.hitbox.width < 0) {
+        if (hitbox.x + hitbox.width > this.window.width) {
             return false;
         }
 
