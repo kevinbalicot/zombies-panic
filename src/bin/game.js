@@ -66,10 +66,10 @@ export class Game {
         }
 
         for (let object2 of objects) {
-            if (object1.x <= object2.x + object2.hitbox.width &&
-                (object1.x + object1.hitbox.width) >= object2.x &&
-                object1.y <= (object2.y + object2.hitbox.height) &&
-                (object1.y + object1.hitbox.height) >= object2.y
+            if ((object1.x - object1.pivot.x) <= (object2.x - object2.pivot.x) + object2.hitbox.width &&
+                ((object1.x - object1.pivot.x) + object1.hitbox.width) >= (object2.x - object2.pivot.x) &&
+                (object1.y - object1.pivot.y) <= ((object2.y -object2.pivot.y) + object2.hitbox.height) &&
+                ((object1.y - object1.pivot.y) + object1.hitbox.height) >= (object2.y -object2.pivot.y)
             ) {
                 return object2;
             }

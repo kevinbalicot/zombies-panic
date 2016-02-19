@@ -60,6 +60,8 @@ export class DisplayObject extends PIXI.Container {
 
     checkCollisions (objects) {
 
+        let directions = {};
+
         if (this.unblockable) {
             return;
         }
@@ -69,37 +71,69 @@ export class DisplayObject extends PIXI.Container {
         }
 
         for (let object of objects) {
+
+            directions = {
+                up: false,
+                down: false,
+                left: false,
+                right: false
+            };
+
+            if (this.x <= object.x) {
+                directions.left = true;
+            }
+
+            if (this.x > object.x) {
+                directions.right;
+            }
+
+            if (this.y < object.y) {
+                directions.top = true;
+            }
+
+            if (this.y > object.y) {
+                directions.down = true;
+            }
+
+            // LEFT
             if ((this.x + this.hitbox.width - this.pivot.x) > (object.x - object.pivot.x) &&
                 this.x < (object.x + object.hitbox.width) &&
                 this.y >= object.y &&
-                this.y <= (object.y + object.hitbox.height)
+                this.y <= (object.y + object.hitbox.height) &&
+                directions.left
             ) {
                 this.x = object.x - object.pivot.x - this.hitbox.width + this.pivot.x;
                 return;
             }
 
+            // RIGHT
             if ((this.x - this.pivot.x) < (object.x + object.hitbox.width - object.pivot.x) &&
                 this.x > object.x &&
                 this.y >= object.y &&
-                this.y <= (object.y + object.hitbox.height)
+                this.y <= (object.y + object.hitbox.height) &&
+                directions.right
             ) {
                 this.x = object.x - object.pivot.x + object.hitbox.width + this.pivot.x;
                 return;
             }
 
+            // TOP
             if ((this.y + this.hitbox.height - this.pivot.y) > (object.y - object.pivot.y) &&
                 this.y < (object.y + object.hitbox.height) &&
                 this.x >= object.x &&
-                this.x <= (object.x + object.hitbox.width)
+                this.x <= (object.x + object.hitbox.width) &&
+                directions.top
             ) {
                 this.y = object.y - object.pivot.y - this.hitbox.height + this.pivot.y;
                 return;
             }
 
+            // DOWN
             if ((this.y - this.pivot.y) < (object.y + object.hitbox.height - object.pivot.y) &&
                 this.y > object.y &&
                 this.x >= object.x &&
-                this.x <= (object.x + object.hitbox.width)
+                this.x <= (object.x + object.hitbox.width) &&
+                directions.down
             ) {
                 this.y = object.y - object.pivot.y + object.hitbox.height + this.pivot.y;
                 return;
