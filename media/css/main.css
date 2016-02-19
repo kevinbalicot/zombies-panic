@@ -1,0 +1,38 @@
+body {
+    margin: 0;
+    font-family: sans-serif;
+}
+
+canvas {
+    display: block;
+    border: solid 1px black;
+    margin: auto;
+    margin-top: 50px;
+}
+
+.main-menu {
+    width: 400px;
+    margin: 50px auto auto auto;
+    text-align: center;
+    background: lightgray;
+    padding: 10px 10px 20px 10px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 2px gray;
+}
+
+.main-menu form > button {
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+}
+
+.main-menu form > button:active {
+    box-shadow: inset 1px 1px 2px gray;
+}
+
+.main-menu form > input {
+    display: block;
+    margin: auto auto 20px auto;
+    padding: 10px 15px;
+    border: none;
+}
