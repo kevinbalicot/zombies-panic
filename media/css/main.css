@@ -1,38 +1,45 @@
+@font-face {
+    font-family: MrsMonster;
+    src: url(./../fonts/mrsmonster.ttf);
+}
+
 body {
     margin: 0;
     font-family: sans-serif;
+    background-image: url('./../images/background.jpg');
+    background-position: center fixed;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
-canvas {
-    display: block;
-    border: solid 1px black;
+body > section {
+    width: 800px;
     margin: auto;
+}
+
+body > section > .menu {
+    margin-top: 50px;
+    border-radius: 10px;
+}
+
+body > section > .game {
     margin-top: 50px;
 }
 
-.main-menu {
-    width: 400px;
-    margin: 50px auto auto auto;
-    text-align: center;
-    background: lightgray;
-    padding: 10px 10px 20px 10px;
-    border-radius: 5px;
-    box-shadow: 2px 2px 2px gray;
+body > section > .game > canvas {
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
 }
 
-.main-menu form > button {
-    padding: 10px 15px;
-    border: none;
-    cursor: pointer;
+body > section > .game > .hud {
+    font-family: MrsMonster;
+    padding: 10px;
+    background-color: #cecece;
+    text-align: right;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
 }
 
-.main-menu form > button:active {
-    box-shadow: inset 1px 1px 2px gray;
-}
-
-.main-menu form > input {
-    display: block;
-    margin: auto auto 20px auto;
-    padding: 10px 15px;
-    border: none;
+body .hidden {
+    display: none;
 }

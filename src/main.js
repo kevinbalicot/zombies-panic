@@ -5,34 +5,59 @@ import {MainScene} from './scenes/main';
 import {WINDOW_WIDTH, WINDOW_HEIGHT} from './config/config';
 import eventsManager from './services/events-manager';
 
+let menu = document.querySelector('.menu');
+let gameContainer = document.querySelector('.game');
+let startButton = document.querySelector('.start-game');
 let meter = new FPSMeter(document.getElementById('fps'), { graph: true, heat: true });
-let game = new Game(WINDOW_WIDTH, WINDOW_HEIGHT, { transparent: true, antialias: true });
+let game = null;
+let tickerinitialized = false;
 
-game.stage = new MainScene();
+/**
+ * Init a new game
+ */
+function initGame () {
+    game = new Game(WINDOW_WIDTH, WINDOW_HEIGHT, { antialias: true });
+    game.renderer.backgroundColor = 0xffffff;
+    game.stage = new MainScene();
+
+    if (!tickerinitialized) {
+        game.ticker.add(() => {
+            game.refresh();
+            meter.tick();
+        });
+        tickerinitialized = true;
+    }
+
+    gameContainer.className = 'game hidden';
+    menu.className = 'menu';
+}
+
+/**
+ * Start game
+ */
+function startGame () {
+    menu.className = 'menu hidden';
+    game.start();
+    gameContainer.className = 'game';
+    gameContainer.appendChild(game.renderer.view);
+}
 
 eventsManager.events.push({ action: 'GAME_OVER', callback: () => {
     game.stop();
     alert('GAME OVER');
+    game.renderer.destroy(true);
+    initGame();
 }});
 
 eventsManager.events.push({ action: 'WIN', callback: () => {
     game.stop();
     alert('WIN !!!!');
+    game.renderer.destroy(true);
+    initGame();
 }});
 
-
-game.ticker.add(() => {
-    game.refresh();
-    meter.tick();
+startButton.addEventListener('click', () => {
+    startGame();
 });
 
-game.start();
-document.querySelector('#game').appendChild(game.renderer.view);
-
-/*
-let connectionForm = document.querySelector('.connection-form');
-connectionForm.addEventListener('submit', (event) => {
-    event.preventDefault();
-    let nickname = document.getElementsByName('nickname').item(0);
-});
-*/
+initGame();

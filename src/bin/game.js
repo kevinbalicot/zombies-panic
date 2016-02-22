@@ -9,7 +9,8 @@ export class Game {
 
         this.renderer = new PIXI.WebGLRenderer(windowWidth, windowHeight, options);
         this.ticker = PIXI.ticker.shared;
-        this.ticker.autoStart = false;
+        this.ticker.autoStart = false; //WTF doesn't work ?
+        this.ticker.stop();
         this.stopped = true;
         this.window = {
             width: windowWidth,

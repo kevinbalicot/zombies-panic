@@ -1,0 +1,506 @@
+@font-face {
+    font-family: MrsMonster;
+    src: url(./../fonts/mrsmonster.ttf);
+}
+
+@keyframes bowing {
+    from {
+      transform: scale(1, 1);
+    }
+
+    33% {
+      transform: scale(1.5, 1.5);
+    }
+
+    to {
+      transform: scale(1, 1);
+    }
+}
+
+@keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+
+    25% {
+      transform: rotate(10deg);
+    }
+
+    50% {
+      transform: rotate(0deg);
+    }
+
+    75% {
+      transform: rotate(-10deg);
+    }
+
+    to {
+      transform: rotate(0deg);
+    }
+}
+
+@keyframes idle {
+  from {
+    transform: scale(1, 1);
+  }
+
+  75% {
+    transform: scale(1.03, 1.03);
+  }
+
+  to {
+    transform: scale(1, 1);
+  }
+}
+
+@keyframes texture-move {
+  from {
+    background-position-x: 0px;
+  }
+
+  to {
+    background-position-x: 300px;
+  }
+}
+
+@keyframes walk {
+  from {
+    transform: scale(.5, .5);
+  }
+
+  to {
+    transform: scale(1, 1);
+  }
+}
+
+@keyframes walk-shadow {
+  from {
+    transform: scale(1, 1);
+  }
+
+  to {
+    transform: scale(1.5, 1.5);
+  }
+}
+
+.title {
+    font-family: MrsMonster;
+    color: #091300;
+}
+
+h1.title {
+  position: absolute;
+  margin: 0;
+  font-size: 80px;
+  top: 20px;
+  left: 263px;
+  animation-duration: 1s;
+  animation-name: bowing;
+  animation-delay: 1s;
+}
+
+h2.title {
+  position: absolute;
+  margin: 0;
+  font-size: 70px;
+  top: 90px;
+  left: 274px;
+
+  animation: bowing 1s ease 1.5s, rotate .5s ease 5s;
+}
+
+.menu {
+  position: relative;
+  width: 800px;
+  height: 600px;
+  overflow: hidden;
+}
+
+.menu > .filter {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 200;
+}
+
+.menu > .texture {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url(/media/images/filter.jpg);
+  opacity: .2;
+  animation-duration: 10s;
+  animation-name: texture-move;
+  animation-iteration-count: infinite;
+  z-index: 199;
+}
+
+.menu button {
+  position: absolute;
+  top: 450px;
+  left: 350px;
+  padding: 15px 16px 13px;
+  border-radius: 5px;
+  border: 1px solid transparent;
+  border-width: 0px 1px 4px;
+  color: rgb(255, 255, 255);
+  background-color: rgb(255, 133, 27);
+  border-color: rgb(255, 119, 1);
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 300;
+}
+
+.menu > .background {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: #9DE2EC;
+}
+
+.menu > .background > .grass {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 350px;
+  background-color: #62744A;
+}
+
+.menu > .background > .zombie {
+  position: absolute;
+}
+
+.menu > .background > .zombie > .body {
+  width: 100px;
+  height: 100px;
+  border-radius: 20px;
+  background-color: #56CA6A;
+}
+
+.menu > .background > .zombie > .body > .brain {
+  position: absolute;
+  top: -5px;
+  right: 5px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #9DE2EC;
+}
+
+.menu > .background > .zombie > .body > .brain:nth-child(2) {
+  position: absolute;
+  top: 5px;
+  right: -7px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #9DE2EC;
+}
+
+.menu > .background > .zombie > .body > .left-eye {
+  position: absolute;
+  top: 50px;
+  left: 20px;
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.menu > .background > .zombie > .body > .left-dark-circles {
+  position: absolute;
+  top: 50px;
+  left: 17px;
+  width: 23px;
+  height: 23px;
+  background-color: rgba(0, 0, 0, .3);
+  border-radius: 50%;
+}
+
+.menu > .background > .zombie > .body > .right-eye {
+  position: absolute;
+  top: 50px;
+  right: 20px;
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.menu > .background > .zombie > .body > .right-dark-circles {
+  position: absolute;
+  top: 50px;
+  right: 17px;
+  width: 23px;
+  height: 23px;
+  background-color: rgba(0, 0, 0, .3);
+  border-radius: 50%;
+}
+
+.menu > .background > .zombie > .body > .mouth {
+  position: absolute;
+  top: 80px;
+  left: 40px;
+  width: 20px;
+  height: 20px;
+  background-color: #C12A2C;
+  border-radius: 50%;
+}
+
+.menu > .background > .zombie > .body > .chin {
+  position: absolute;
+  top: 90px;
+  left: 40px;
+  width: 20px;
+  height: 10px;
+  background-color: inherit;
+  z-index: 1;
+}
+
+/** PLAYER **/
+.menu > .background > .player {
+  position: absolute;
+  z-index: 100;
+}
+
+.menu > .background > .player > .body {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background-color: #E9BCA8;
+  border-radius: 20px;
+  overflow: hidden;
+  animation-duration: 2s;
+  animation-name: idle;
+  animation-iteration-count: infinite;
+}
+
+.menu > .background > .player > .body > .hair {
+  height: 30px;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #2F2E36;
+}
+
+.menu > .background > .player > .body > .headband {
+  position: absolute;
+  top: 15px;
+  width: 100%;
+  height: 20px;
+  background-color: #862628;
+  transform: rotate(3deg);
+  z-index: 101;
+}
+
+.menu > .background > .player > .body > .blood {
+  position: absolute;
+  top: 32px;
+  right: 10px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #C12A2C;
+}
+
+.menu > .background > .player > .body > .blood.blood-two {
+  width: 20px;
+  height: 20px;
+  top: 28px;
+  right: 18px;
+}
+
+.menu > .background > .player > .body > .eyebrows {
+  position: absolute;
+  top: 50px;
+  width: 100px;
+  height: 6px;
+  background-color: inherit;
+  z-index: 101;
+}
+
+.menu > .background > .player > .body > .left-eye {
+  position: absolute;
+  top: 50px;
+  left: 20px;
+  width: 20px;
+  height: 20px;
+  background-color: black;
+  border-radius: 50%;
+}
+
+.menu > .background > .player > .body > .left-dark-circles {
+  position: absolute;
+  top: 50px;
+  left: 17px;
+  width: 23px;
+  height: 23px;
+  background-color: rgba(0, 0, 0, .3);
+  border-radius: 50%;
+}
+
+.menu > .background > .player > .body > .right-eye {
+  position: absolute;
+  top: 50px;
+  right: 20px;
+  width: 20px;
+  height: 20px;
+  background-color: black;
+  border-radius: 50%;
+}
+
+.menu > .background > .player > .body > .right-dark-circles {
+  position: absolute;
+  top: 50px;
+  right: 17px;
+  width: 23px;
+  height: 23px;
+  background-color: rgba(0, 0, 0, .3);
+  border-radius: 50%;
+}
+
+.menu > .background > .player > .body > .mouth {
+  position: absolute;
+  top: 80px;
+  left: 42px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: solid 3px black;
+}
+
+.menu > .background > .player > .body > .chin {
+  position: absolute;
+  top: 88px;
+  left: 40px;
+  width: 20px;
+  height: 6px;
+  background-color: inherit;
+  z-index: 101;
+}
+
+.menu > .background > .player > .body > .beard {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 75px;
+  background-color: rgba(0, 0, 0, .1);
+  z-index: 102;
+}
+
+.menu > .background > .player > .gun {
+  position: absolute;
+  top: 50px;
+  left: 90px;
+  width: 50px;
+  height: 50px;
+  z-index: 10;
+  transform: rotate(-45deg);
+}
+
+.menu > .background > .player > .gun > .grip {
+  position: absolute;
+  top: 10px;
+  width: 25px;
+  height: 15px;
+  border-radius: 5px;
+  background-color: #6E563F;
+  transform: rotate(-45deg);
+}
+
+.menu > .background > .player > .gun > .barrel {
+  position: absolute;
+  left: 15px;
+  width: 35px;
+  height: 20px;
+  border-radius: 5px;
+  border-top-right-radius: 0px;
+  background-color: gray;
+  z-index: 111;
+}
+
+.menu > .background > .player > .gun > .cannon {
+  position: absolute;
+  left: 50px;
+  width: 40px;
+  height: 10px;
+  background-color: darkgray;
+}
+
+.menu > .background > .player > .gun > .cannon-grip {
+  position: absolute;
+  top: 10px;
+  left: 40px;
+  width: 40px;
+  height: 10px;
+  border-radius: 2px;
+  background-color: #6E563F;
+}
+
+.menu > .background > .zombie-shadow {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border-radius: 30px;
+  background-color: #073A10;
+  box-shadow: 5px -5px 10px #073A10;
+  transform: scale(1.5, 1.5);
+  animation-duration: 20s;
+  animation-name: walk-shadow;
+}
+
+/** POSITION **/
+.menu > .background > .player {
+    top: 300px;
+    left: 350px;
+}
+
+.menu > .background > .zombie {
+    top: 185px;
+    left: 200px;
+    animation-duration: 30s;
+    animation-name: walk;
+}
+
+.menu > .background > .zombie.two {
+  top: 200px;
+  left: 80px;
+}
+
+.menu > .background > .zombie.three {
+  top: 200px;
+  right: 200px;
+  left: auto;
+}
+
+.menu > .background > .zombie-shadow {
+  top: 450px;
+  left: -30px;
+}
+
+.menu > .background > .zombie-shadow.two {
+  top: 500px;
+  left: 160px;
+}
+
+.menu > .background > .zombie-shadow.three {
+  top: 480px;
+  left: 450px;
+  box-shadow: -5px -5px 10px #073A10;
+}
+
+.menu > .background > .zombie-shadow.four {
+  top: 400px;
+  left: 620px;
+  box-shadow: -5px -5px 10px #073A10;
+}

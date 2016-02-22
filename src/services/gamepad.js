@@ -16,12 +16,12 @@ gamepad[KEY_SPACE] = false;
 gamepad[LEFT_CLICK] = false;
 
 document.addEventListener('keydown', (e) => {
-    e.preventDefault();
+    //e.preventDefault();
     gamepad[e.keyCode] = true;
 });
 
 document.addEventListener('keyup', (e) => {
-    e.preventDefault();
+    //e.preventDefault();
     gamepad[e.keyCode] = false;
 });
 
