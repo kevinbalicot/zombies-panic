@@ -61,8 +61,6 @@ export class MainScene extends Scene {
 
         this.player.move();
         this.player.follow(game.renderer.plugins.interaction.mouse.global);
-        game.checkBordersCollision(this.player);
-        this.player.checkCollisions(this.walls);
 
         for (let bullet of this.bullets) {
             bullet.move();
@@ -88,7 +86,6 @@ export class MainScene extends Scene {
             let otherZombies = this.zombies.slice();
             otherZombies.splice(otherZombies.indexOf(zombie), 1);
             zombie.move();
-            zombie.checkCollisions(this.walls.concat(otherZombies, this.player));
 
             zombie.follow(this.player);
             game.checkBordersCollision(zombie);
@@ -97,11 +94,16 @@ export class MainScene extends Scene {
                 this.player.hite(zombie);
             }
 
-            document.getElementById('life').innerHTML = this.player.life;
             if (this.player.life < 0 && !game.stopped) {
                 eventsManager.emitter.dispatch({ type: 'GAME_OVER' });
             }
         }
+
+        // Check collision bewteen player / monsters and walls
+        this.zombies.forEach((zombie) => zombie.checkCollisions(this.walls));
+        this.player.checkCollisions(this.walls);
+
+        game.checkBordersCollision(this.player);
 
         if (this.zombies.length === 0) {
             eventsManager.emitter.dispatch({ type: 'WIN' });

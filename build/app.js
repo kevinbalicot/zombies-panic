@@ -30088,10 +30088,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var menu = document.querySelector('.menu');
 var gameContainer = document.querySelector('.game');
 var startButton = document.querySelector('.start-game');
+var lifeCounter = document.querySelector('.hud .life');
 var meter = new FPSMeter(document.getElementById('fps'), { graph: true, heat: true });
 var game = null;
 var tickerinitialized = false;
 
+/**
+ * Init a new game
+ */
 function initGame() {
     game = new _game.Game(_config.WINDOW_WIDTH, _config.WINDOW_HEIGHT, { antialias: true });
     game.renderer.backgroundColor = 0xffffff;
@@ -30101,6 +30105,7 @@ function initGame() {
         game.ticker.add(function () {
             game.refresh();
             meter.tick();
+            lifeCounter.innerHTML = game.stage.player.life;
         });
         tickerinitialized = true;
     }
@@ -30109,6 +30114,9 @@ function initGame() {
     menu.className = 'menu';
 }
 
+/**
+ * Start game
+ */
 function startGame() {
     menu.className = 'menu hidden';
     game.start();
@@ -30234,8 +30242,6 @@ var MainScene = exports.MainScene = function (_Scene) {
 
             this.player.move();
             this.player.follow(game.renderer.plugins.interaction.mouse.global);
-            game.checkBordersCollision(this.player);
-            this.player.checkCollisions(this.walls);
 
             var _iteratorNormalCompletion = true;
             var _didIteratorError = false;
@@ -30289,7 +30295,6 @@ var MainScene = exports.MainScene = function (_Scene) {
                     var otherZombies = this.zombies.slice();
                     otherZombies.splice(otherZombies.indexOf(zombie), 1);
                     zombie.move();
-                    zombie.checkCollisions(this.walls.concat(otherZombies, this.player));
 
                     zombie.follow(this.player);
                     game.checkBordersCollision(zombie);
@@ -30298,11 +30303,12 @@ var MainScene = exports.MainScene = function (_Scene) {
                         this.player.hite(zombie);
                     }
 
-                    document.getElementById('life').innerHTML = this.player.life;
                     if (this.player.life < 0 && !game.stopped) {
                         _eventsManager2.default.emitter.dispatch({ type: 'GAME_OVER' });
                     }
                 }
+
+                // Check collision bewteen player / monsters and walls
             } catch (err) {
                 _didIteratorError2 = true;
                 _iteratorError2 = err;
