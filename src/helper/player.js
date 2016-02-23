@@ -1,6 +1,6 @@
 'use strict';
 
-import {DisplayObject, DIRECTION_UP} from './display-object';
+import {DisplayObject, DIRECTION_UP} from './../bin/display-object';
 import {Bullet} from './bullet';
 
 export class Player extends DisplayObject {

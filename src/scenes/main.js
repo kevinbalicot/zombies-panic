@@ -3,10 +3,10 @@
 import {Scene} from './../bin/scene';
 import {WINDOW_WIDTH, WINDOW_HEIGHT} from './../config/config';
 import {DIRECTION_UP, DIRECTION_DOWN, DIRECTION_RIGHT, DIRECTION_LEFT} from './../bin/display-object';
-import {Player} from './../bin/player';
-import {Wall} from './../bin/wall';
-import gamepad from './../services/gamepad';
+import {Player} from './../helper/player';
+import {Wall} from './../helper/wall';
 import {KEY_UP, KEY_LEFT, KEY_RIGHT, KEY_DOWN, LEFT_CLICK} from './../services/gamepad';
+import gamepad from './../services/gamepad';
 import eventsManager from './../services/events-manager';
 import * as PIXI from 'pixi.js';
 

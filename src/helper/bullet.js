@@ -1,7 +1,7 @@
 'use strict';
 
 import * as PIXI from 'pixi.js';
-import {DisplayObject} from './display-object';
+import {DisplayObject} from './../bin/display-object';
 
 export class Bullet extends DisplayObject {
 
