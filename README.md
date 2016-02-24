@@ -23,3 +23,5 @@ $ http-server .
 Go to `http://localhost:8080`
 
 Enjoy !
+
+![Zombies panic](/media/images/zombies-panic.gif)
