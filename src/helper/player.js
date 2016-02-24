@@ -1,14 +1,16 @@
 'use strict';
 
 import {DisplayObject, DIRECTION_UP} from './../bin/display-object';
+import {Gun} from './weapons/gun';
 import {Bullet} from './bullet';
+import * as PIXI from 'pixi.js';
 
 export class Player extends DisplayObject {
 
     constructor (x, y, hitboxWidth, hitboxHeight) {
         super(x, y, hitboxWidth, hitboxHeight);
 
-        this.shooting = false;
+        this.weapon = new Gun();
     }
 
     pushBy (object, power = 4) {
@@ -16,25 +18,12 @@ export class Player extends DisplayObject {
         this.y += Math.sin(object.rotation) * (object.velocity * power);
     }
 
-    hite (object, power = 10) {
+    hite (object, damage, power = 10) {
         this.pushBy(object, power);
-        this.life -= object.strength;
+        this.life -= damage;
     }
 
     shoot () {
-        if (!this.shooting) {
-            let bullet = new Bullet(this.x, this.y, 2, 2);
-            bullet.strength = 20;
-            bullet.rotation = this.rotation;
-            bullet.direction = DIRECTION_UP;
-            bullet.initPivot();
-            this.shooting = true;
-
-            setTimeout(() => this.shooting = false, 100);
-
-            return bullet;
-        }
-
-        return null;
+        return this.weapon.shoot(new PIXI.Point(this.x, this.y), this.rotation, DIRECTION_UP);
     }
 }

@@ -54,8 +54,7 @@ export class MainScene extends Scene {
         if (gamepad[LEFT_CLICK]) {
             let bullet = this.player.shoot();
             if (!!bullet) {
-                this.bullets.push(bullet);
-                this.addChild(bullet);
+                this.addBullets(bullet);
             }
         }
 
@@ -68,7 +67,7 @@ export class MainScene extends Scene {
             let wall = game.hasCollisionBetweenObjects(bullet, this.walls);
 
             if (!!zombie) {
-                zombie.hite(bullet, 2);
+                zombie.hite(bullet, bullet.getDamage(), 2);
                 this.removeBullet(bullet);
             }
 
@@ -91,7 +90,7 @@ export class MainScene extends Scene {
             game.checkBordersCollision(zombie);
 
             if (!!game.hasCollisionBetweenObjects(this.player, zombie)) {
-                this.player.hite(zombie);
+                this.player.hite(zombie, zombie.strength);
             }
 
             if (this.player.life < 0 && !game.stopped) {
@@ -115,6 +114,7 @@ export class MainScene extends Scene {
         let zombieBody = new PIXI.Graphics();
         let zombie = new Player(x, y, size, size);
         zombie.strength = 2;
+        zombie.life = 20;
         zombie.direction = DIRECTION_UP;
         zombie.velocity = Math.random();
 
@@ -149,5 +149,16 @@ export class MainScene extends Scene {
     removeBullet (bullet) {
         this.removeChild(bullet);
         this.bullets.splice(this.bullets.indexOf(bullet), 1);
+    }
+
+    addBullets (bullets) {
+        if (!Array.isArray(bullets)) {
+            bullets = [bullets];
+        }
+
+        for (let bullet of bullets) {
+            this.bullets.push(bullet);
+            this.addChild(bullet);
+        }
     }
 }
