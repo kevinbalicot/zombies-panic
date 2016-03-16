@@ -5,6 +5,8 @@ export const KEY_DOWN = 40;
 export const KEY_LEFT = 37;
 export const KEY_RIGHT = 39;
 export const KEY_SPACE = 13;
+export const KEY_B = 66;
+export const KEY_N = 78;
 export const LEFT_CLICK = 'left_click';
 
 const gamepad = [];
@@ -13,6 +15,8 @@ gamepad[KEY_DOWN] = false;
 gamepad[KEY_LEFT] = false;
 gamepad[KEY_RIGHT] = false;
 gamepad[KEY_SPACE] = false;
+gamepad[KEY_B] = false;
+gamepad[KEY_N] = false;
 gamepad[LEFT_CLICK] = false;
 
 document.addEventListener('keydown', (e) => {

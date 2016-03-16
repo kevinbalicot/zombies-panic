@@ -25,7 +25,8 @@ export const SUBMACHINE_GUN = {
     loader: 30,
     ammo: 90,
     speed: 300,
-    reloadingTime: 1500
+    reloadingTime: 1500,
+    icon: '/media/images/icons/submachine-gun.png'
 };
 
 export const MACHINE_GUN = {
@@ -37,7 +38,8 @@ export const MACHINE_GUN = {
     loader: 50,
     ammo: 100,
     speed: 100,
-    reloadingTime: 3000
+    reloadingTime: 3000,
+    icon: '/media/images/icons/machine-gun.png'
 };
 
 export const SHOTGUN = {
@@ -49,5 +51,6 @@ export const SHOTGUN = {
     loader: 4,
     ammo: 20,
     speed: 1000,
-    reloadingTime: 2000
+    reloadingTime: 2000,
+    icon: '/media/images/icons/shotgun.png'
 };

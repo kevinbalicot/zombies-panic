@@ -5,7 +5,12 @@ import {WINDOW_WIDTH, WINDOW_HEIGHT} from './../config/config';
 import {DIRECTION_UP, DIRECTION_DOWN, DIRECTION_RIGHT, DIRECTION_LEFT} from './../bin/display-object';
 import {Player} from './../helper/player';
 import {Wall} from './../helper/wall';
-import {KEY_UP, KEY_LEFT, KEY_RIGHT, KEY_DOWN, LEFT_CLICK} from './../services/gamepad';
+import {KEY_UP, KEY_LEFT, KEY_RIGHT, KEY_DOWN, LEFT_CLICK, KEY_N, KEY_B} from './../services/gamepad';
+import {Inventory} from './../bin/inventory';
+import {Item} from './../bin/item';
+import {Gun} from './../helper/weapons/gun';
+import {Shotgun} from './../helper/weapons/shotgun';
+import {MachineGun} from './../helper/weapons/machine-gun';
 import gamepad from './../services/gamepad';
 import eventsManager from './../services/events-manager';
 import * as PIXI from 'pixi.js';
@@ -21,6 +26,16 @@ export class MainScene extends Scene {
         this.bullets = [];
         this.player = new Player(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, 10, 10);
         this.player.initPivot();
+        this.inventory = new Inventory();
+
+        let gun = new Gun();
+        let shotgun = new Shotgun();
+        let machineGun = new MachineGun();
+        this.inventory.add(new Item(gun, gun.name));
+        this.inventory.add(new Item(machineGun, machineGun.name));
+        this.inventory.add(new Item(shotgun, shotgun.name));
+
+        this.player.weapon = this.inventory.getCurrent().object;
 
         for (let i = 0; i < 10; i++) {
             this.createZombie(10 + (i * 200), 10 + (i * 100));
@@ -47,6 +62,12 @@ export class MainScene extends Scene {
             this.player.direction = DIRECTION_LEFT;
         } else if (gamepad[KEY_RIGHT]) {
             this.player.direction = DIRECTION_RIGHT;
+        } else if (gamepad[KEY_N]) {
+            this.player.weapon = this.inventory.getNext().object;
+            gamepad[KEY_N] = false;
+        } else if (gamepad[KEY_B]) {
+            this.player.weapon = this.inventory.getPreviouse().object;
+            gamepad[KEY_B] = false;
         } else {
             this.player.direction = null;
         }

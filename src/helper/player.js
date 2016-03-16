@@ -1,16 +1,12 @@
 'use strict';
 
 import {DisplayObject, DIRECTION_UP} from './../bin/display-object';
-import {Gun} from './weapons/gun';
-import {Bullet} from './bullet';
 import * as PIXI from 'pixi.js';
 
 export class Player extends DisplayObject {
 
     constructor (x, y, hitboxWidth, hitboxHeight) {
         super(x, y, hitboxWidth, hitboxHeight);
-
-        this.weapon = new Gun();
     }
 
     pushBy (object, power = 4) {
