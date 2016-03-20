@@ -8,6 +8,7 @@ import {Wall} from './../helper/wall';
 import {KEY_UP, KEY_LEFT, KEY_RIGHT, KEY_DOWN, LEFT_CLICK, KEY_N, KEY_B} from './../services/gamepad';
 import {Inventory} from './../bin/inventory';
 import {Item} from './../bin/item';
+import {Graphics} from './../bin/graphics';
 import {Gun} from './../helper/weapons/gun';
 import {Shotgun} from './../helper/weapons/shotgun';
 import {MachineGun} from './../helper/weapons/machine-gun';
@@ -25,6 +26,7 @@ export class MainScene extends Scene {
         this.walls = [];
         this.bullets = [];
         this.player = new Player(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, 10, 10);
+        this.player.addChild(Graphics.drawRect(0xFF3300, null, 0, 0, 10, 10));
         this.player.initPivot();
         this.inventory = new Inventory();
 
@@ -43,12 +45,6 @@ export class MainScene extends Scene {
 
         this.createWall(WINDOW_WIDTH / 4, 150, 100, 100);
 
-        let playerBody = new PIXI.Graphics();
-        playerBody.beginFill(0xFF3300);
-        playerBody.drawRect(0, 0, 10, 10);
-        playerBody.endFill();
-
-        this.player.addChild(playerBody);
         this.addChild(this.player);
     }
 
@@ -132,18 +128,13 @@ export class MainScene extends Scene {
 
     createZombie (x, y) {
         let size = (Math.random() * 20) + 10;
-        let zombieBody = new PIXI.Graphics();
         let zombie = new Player(x, y, size, size);
         zombie.strength = 2;
         zombie.life = 20;
         zombie.direction = DIRECTION_UP;
         zombie.velocity = Math.random();
 
-        zombieBody.beginFill(0x38c429);
-        zombieBody.drawRect(0, 0, size, size);
-        zombieBody.endFill();
-
-        zombie.addChild(zombieBody);
+        zombie.addChild(Graphics.drawRect(0x38c429, null, 0, 0, size, size));
         zombie.initPivot();
         this.zombies.push(zombie);
 
@@ -152,11 +143,7 @@ export class MainScene extends Scene {
 
     createWall (x, y, width, height) {
         let wall = new Wall(x, y, width, height);
-        let wallBody = new PIXI.Graphics();
-        wallBody.beginFill(0xFF3300);
-        wallBody.drawRect(0, 0, width, height);
-        wallBody.endFill();
-        wall.addChild(wallBody);
+        wall.addChild(Graphics.drawRect(0xFF3300, null, 0, 0, width, height));
         this.walls.push(wall);
 
         this.addChild(wall);
