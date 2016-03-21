@@ -12,6 +12,7 @@ import {Graphics} from './../bin/graphics';
 import {Gun} from './../helper/weapons/gun';
 import {Shotgun} from './../helper/weapons/shotgun';
 import {MachineGun} from './../helper/weapons/machine-gun';
+import {Wave} from './../helper/wave';
 import gamepad from './../services/gamepad';
 import eventsManager from './../services/events-manager';
 import * as PIXI from 'pixi.js';
@@ -29,6 +30,10 @@ export class MainScene extends Scene {
         this.player.addChild(Graphics.drawRect(0xFF3300, null, 0, 0, 10, 10));
         this.player.initPivot();
         this.inventory = new Inventory();
+        this.wave = new Wave(
+            this,
+            [new PIXI.Point(10, 10), new PIXI.Point(WINDOW_WIDTH - 10, 10)]
+        );
 
         let gun = new Gun();
         let shotgun = new Shotgun();
@@ -39,11 +44,7 @@ export class MainScene extends Scene {
 
         this.player.weapon = this.inventory.getCurrent().object;
 
-        for (let i = 0; i < 10; i++) {
-            this.createZombie(10 + (i * 200), 10 + (i * 100));
-        }
-
-        this.createWall(WINDOW_WIDTH / 4, 150, 100, 100);
+        //this.createWall(WINDOW_WIDTH / 4, 150, 100, 100);
 
         this.addChild(this.player);
     }
@@ -58,14 +59,18 @@ export class MainScene extends Scene {
             this.player.direction = DIRECTION_LEFT;
         } else if (gamepad[KEY_RIGHT]) {
             this.player.direction = DIRECTION_RIGHT;
-        } else if (gamepad[KEY_N]) {
-            this.player.weapon = this.inventory.getNext().object;
-            gamepad[KEY_N] = false;
-        } else if (gamepad[KEY_B]) {
-            this.player.weapon = this.inventory.getPreviouse().object;
-            gamepad[KEY_B] = false;
         } else {
             this.player.direction = null;
+        }
+
+        if (gamepad[KEY_N]) {
+            this.player.weapon = this.inventory.getNext().object;
+            gamepad[KEY_N] = false;
+        }
+
+        if (gamepad[KEY_B]) {
+            this.player.weapon = this.inventory.getPreviouse().object;
+            gamepad[KEY_B] = false;
         }
 
         if (gamepad[LEFT_CLICK]) {
@@ -74,6 +79,8 @@ export class MainScene extends Scene {
                 this.addBullets(bullet);
             }
         }
+
+        this.wave.refresh();
 
         this.player.move();
         this.player.follow(game.renderer.plugins.interaction.mouse.global);
@@ -96,7 +103,7 @@ export class MainScene extends Scene {
         for (let zombie of this.zombies) {
 
             if (zombie.life <= 0) {
-                this.removeZombie(zombie);
+                this.wave.removeZombie(zombie);
             }
 
             let otherZombies = this.zombies.slice();
@@ -121,24 +128,9 @@ export class MainScene extends Scene {
 
         game.checkBordersCollision(this.player);
 
-        if (this.zombies.length === 0) {
+        if (this.wave.isFinished()) {
             eventsManager.emitter.dispatch({ type: 'WIN' });
         }
-    }
-
-    createZombie (x, y) {
-        let size = (Math.random() * 20) + 10;
-        let zombie = new Player(x, y, size, size);
-        zombie.strength = 2;
-        zombie.life = 20;
-        zombie.direction = DIRECTION_UP;
-        zombie.velocity = Math.random();
-
-        zombie.addChild(Graphics.drawRect(0x38c429, null, 0, 0, size, size));
-        zombie.initPivot();
-        this.zombies.push(zombie);
-
-        this.addChild(zombie);
     }
 
     createWall (x, y, width, height) {
@@ -147,11 +139,6 @@ export class MainScene extends Scene {
         this.walls.push(wall);
 
         this.addChild(wall);
-    }
-
-    removeZombie (zombie) {
-        this.removeChild(zombie);
-        this.zombies.splice(this.zombies.indexOf(zombie), 1);
     }
 
     removeBullet (bullet) {

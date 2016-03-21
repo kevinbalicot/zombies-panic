@@ -7,6 +7,7 @@ export class Player extends DisplayObject {
 
     constructor (x, y, hitboxWidth, hitboxHeight) {
         super(x, y, hitboxWidth, hitboxHeight);
+        this.direction = DIRECTION_UP;
     }
 
     pushBy (object, power = 4) {
