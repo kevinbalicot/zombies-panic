@@ -12,7 +12,7 @@ import {Graphics} from './../bin/graphics';
 import {Gun} from './../helper/weapons/gun';
 import {Shotgun} from './../helper/weapons/shotgun';
 import {MachineGun} from './../helper/weapons/machine-gun';
-import {Wave} from './../helper/wave';
+import {WaveManager} from './../helper/wave-manager';
 import gamepad from './../services/gamepad';
 import eventsManager from './../services/events-manager';
 import * as PIXI from 'pixi.js';
@@ -23,17 +23,18 @@ export class MainScene extends Scene {
 
         super();
 
-        this.zombies = [];
         this.walls = [];
         this.bullets = [];
         this.player = new Player(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, 10, 10);
         this.player.addChild(Graphics.drawRect(0xFF3300, null, 0, 0, 10, 10));
         this.player.initPivot();
         this.inventory = new Inventory();
-        this.wave = new Wave(
+        this.wave = new WaveManager(
             this,
             [new PIXI.Point(10, 10), new PIXI.Point(WINDOW_WIDTH - 10, 10)]
         );
+
+        this.wave.nextWave();
 
         let gun = new Gun();
         let shotgun = new Shotgun();
@@ -87,7 +88,7 @@ export class MainScene extends Scene {
 
         for (let bullet of this.bullets) {
             bullet.move();
-            let zombie = game.hasCollisionBetweenObjects(bullet, this.zombies);
+            let zombie = game.hasCollisionBetweenObjects(bullet, this.wave.zombiesInGame);
             let wall = game.hasCollisionBetweenObjects(bullet, this.walls);
 
             if (!!zombie) {
@@ -100,13 +101,13 @@ export class MainScene extends Scene {
             }
         }
 
-        for (let zombie of this.zombies) {
+        for (let zombie of this.wave.zombiesInGame) {
 
             if (zombie.life <= 0) {
                 this.wave.removeZombie(zombie);
             }
 
-            let otherZombies = this.zombies.slice();
+            let otherZombies = this.wave.zombiesInGame.slice();
             otherZombies.splice(otherZombies.indexOf(zombie), 1);
             zombie.move();
 
@@ -123,13 +124,15 @@ export class MainScene extends Scene {
         }
 
         // Check collision bewteen player / monsters and walls
-        this.zombies.forEach((zombie) => zombie.checkCollisions(this.walls));
+        this.wave.zombiesInGame.forEach((zombie) => zombie.checkCollisions(this.walls));
         this.player.checkCollisions(this.walls);
 
         game.checkBordersCollision(this.player);
 
         if (this.wave.isFinished()) {
-            eventsManager.emitter.dispatch({ type: 'WIN' });
+            this.wave.level++;
+
+            setTimeout(() => this.wave.nextWave(), 5000);
         }
     }
 

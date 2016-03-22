@@ -23,4 +23,18 @@ export class Utils {
     static radToDeg (rad) {
         return rad * 180 / Math.PI;
     }
+
+    /**
+    * Shuffles array in place.
+    * @param {Array} a items The array containing the items.
+    */
+    static shuffle (a) {
+        let j, x, i;
+        for (i = a.length; i; i -= 1) {
+            j = Math.floor(Math.random() * i);
+            x = a[i - 1];
+            a[i - 1] = a[j];
+            a[j] = x;
+        }
+    }
 }

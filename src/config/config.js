@@ -54,3 +54,46 @@ export const SHOTGUN = {
     reloadingTime: 2000,
     icon: '/media/images/icons/shotgun.png'
 };
+
+export const ZOMBIE = {
+    width: 10,
+    height: 10,
+    life: 20,
+    strength: 5,
+    velocity: 0.8,
+    color: 0x38c429
+}
+
+export const RUNNER = {
+    width: 8,
+    height: 8,
+    life: 40,
+    strength: 10,
+    velocity: 1.5,
+    color: 0x38c999
+}
+
+export const TANKER = {
+    width: 15,
+    height: 15,
+    life: 100,
+    strength: 5,
+    velocity: 0.5,
+    color: 0x99d500
+}
+
+export const ABOMINATION = {
+    width: 20,
+    height: 20,
+    life: 200,
+    strength: 20,
+    velocity: 1,
+    color: 0x001b00
+}
+
+export const WAVE = {
+    zombies: 6,
+    tankers: 2,
+    runners: 2,
+    abominations: 1
+}
