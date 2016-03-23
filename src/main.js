@@ -12,6 +12,7 @@ let lifeCounter = document.querySelector('.hud .life');
 let ammoCounter = document.querySelector('.hud .ammo');
 let weaponIcon = document.querySelector('.hud .weapon');
 let levelCounter = document.querySelector('.hud .level');
+let scoreCounter = document.querySelector('.hud .score');
 let meter = new FPSMeter(document.getElementById('fps'), { graph: true, heat: true });
 let game = null;
 let tickerinitialized = false;
@@ -33,6 +34,7 @@ function initGame () {
             lifeCounter.innerHTML = game.stage.player.life;
             ammoCounter.innerHTML = `${weaponState.loaderState} / ${weaponState.loader} - ${weaponState.ammo}`;
             levelCounter.innerHTML = game.stage.wave.level;
+            scoreCounter.innerHTML = game.stage.score;
         });
         tickerinitialized = true;
     }

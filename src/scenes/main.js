@@ -23,12 +23,14 @@ export class MainScene extends Scene {
 
         super();
 
+        this.score = 0;
         this.walls = [];
         this.bullets = [];
         this.player = new Player(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, 10, 10);
         this.player.addChild(Graphics.drawRect(0xFF3300, null, 0, 0, 10, 10));
         this.player.initPivot();
         this.inventory = new Inventory();
+        this.waitingNextWave = false;
         this.wave = new WaveManager(
             this,
             [new PIXI.Point(10, 10), new PIXI.Point(WINDOW_WIDTH - 10, 10)]
@@ -94,6 +96,7 @@ export class MainScene extends Scene {
             if (!!zombie) {
                 zombie.hite(bullet, bullet.getDamage(), 2);
                 this.removeBullet(bullet);
+                this.score += bullet.getDamage();
             }
 
             if (!game.isVisible(bullet) || !!wall) {
@@ -105,6 +108,7 @@ export class MainScene extends Scene {
 
             if (zombie.life <= 0) {
                 this.wave.removeZombie(zombie);
+                this.score += zombie.maxLife * zombie.strength;
             }
 
             let otherZombies = this.wave.zombiesInGame.slice();
@@ -118,7 +122,7 @@ export class MainScene extends Scene {
                 this.player.hite(zombie, zombie.strength);
             }
 
-            if (this.player.life < 0 && !game.stopped) {
+            if (this.player.life <= 0 && !game.stopped) {
                 eventsManager.emitter.dispatch({ type: 'GAME_OVER' });
             }
         }
@@ -129,10 +133,14 @@ export class MainScene extends Scene {
 
         game.checkBordersCollision(this.player);
 
-        if (this.wave.isFinished()) {
+        if (this.wave.isFinished() && !this.waitingNextWave) {
             this.wave.level++;
+            this.waitingNextWave = true;
 
-            setTimeout(() => this.wave.nextWave(), 5000);
+            setTimeout(() => {
+                this.wave.nextWave();
+                this.waitingNextWave = false;
+            }, 5000);
         }
     }
 

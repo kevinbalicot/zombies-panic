@@ -9,14 +9,12 @@ export const DIRECTION_DOWN = 'down';
 
 export class DisplayObject extends PIXI.Container {
 
-    constructor (x, y, hitboxWidth = 0, hitboxHeight = 0) {
+    constructor (x, y, hitboxWidth = 0, hitboxHeight = 0, velocity = 2) {
         super();
 
         this.x = x;
         this.y = y;
-        this.life = 100;
-        this.strength = 5;
-        this.velocity = 2;
+        this.velocity = velocity;
         this.direction = null;
         this.hitbox = {
             width: hitboxWidth,

@@ -22,10 +22,7 @@ export class WaveManager {
     createZombie (x, y) {
 
         let data = this.zombies.shift();
-        let zombie = new Player(x, y, data.width, data.height);
-        zombie.strength = data.strength;
-        zombie.life = data.life;
-        zombie.velocity = data.velocity;
+        let zombie = new Player(x, y, data.width, data.height, data.life, data.strength, data.velocity);
 
         zombie.addChild(Graphics.drawRect(data.color, null, 0, 0, data.width, data.height));
         zombie.initPivot();
@@ -116,5 +113,6 @@ export class WaveManager {
 
         Utils.shuffle(zombies);
         this.zombies = zombies;
+        this.spawnable = true
     }
 }

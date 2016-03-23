@@ -5,9 +5,12 @@ import * as PIXI from 'pixi.js';
 
 export class Player extends DisplayObject {
 
-    constructor (x, y, hitboxWidth, hitboxHeight) {
-        super(x, y, hitboxWidth, hitboxHeight);
+    constructor (x, y, hitboxWidth, hitboxHeight, life = 100, strength = 4, velocity = 2) {
+        super(x, y, hitboxWidth, hitboxHeight, velocity);
         this.direction = DIRECTION_UP;
+        this.life = life;
+        this.maxLife = this.life;
+        this.strength = strength;
     }
 
     pushBy (object, power = 4) {

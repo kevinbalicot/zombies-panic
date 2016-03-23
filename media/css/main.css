@@ -40,6 +40,10 @@ body > section > .game > .hud {
     border-top-left-radius: 5px;
 }
 
+body > section > .game > .hud > .left {
+    float: left;
+}
+
 body .hidden {
     display: none;
 }
