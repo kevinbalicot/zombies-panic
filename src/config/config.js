@@ -3,6 +3,12 @@
 export const WINDOW_WIDTH = 800;
 export const WINDOW_HEIGHT = 600;
 
+export const ASSETS = [
+    { key: 'medic-pack', path: './../../media/images/icons/medical-pack.png' },
+    { key: 'ammo-pack', path: './../../media/images/icons/backpack.png' },
+    { key: 'weapon-pack', path: './../../media/images/icons/suitcase.png' }
+];
+
 export const GUN = {
     name: 'Pistolet',
     damage: 20,

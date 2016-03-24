@@ -26,9 +26,9 @@ export class Inventory {
     }
 
     get (itemName) {
-        for ([key, item] of this.items) {
+        for (let item of this.items) {
             if (item.name == itemName) {
-                return [key, item];
+                return item;
             }
         }
 
@@ -61,10 +61,8 @@ export class Inventory {
     }
 
     update (item) {
-        let quantity = item.quantity;
-        [key, item] = this.get(item.name);
-        mapItem.quantity += quantity;
-        this.items[key] = item;
+        let itemToUpdate = this.get(item.name);
+        itemToUpdate.quantity += item.quantity;
 
         return this;
     }

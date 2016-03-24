@@ -10,11 +10,14 @@ import {Inventory} from './../bin/inventory';
 import {Item} from './../bin/item';
 import {Graphics} from './../bin/graphics';
 import {Gun} from './../helper/weapons/gun';
-import {Shotgun} from './../helper/weapons/shotgun';
-import {MachineGun} from './../helper/weapons/machine-gun';
 import {WaveManager} from './../helper/wave-manager';
+import {MedicPack} from './../helper/objects/medic-pack';
+import {AmmoPack} from './../helper/objects/ammo-pack';
+import {WeaponPack} from './../helper/objects/weapon-pack';
+import {Utils} from './../bin/utils';
 import gamepad from './../services/gamepad';
 import eventsManager from './../services/events-manager';
+import loader from './../services/loader';
 import * as PIXI from 'pixi.js';
 
 export class MainScene extends Scene {
@@ -26,10 +29,10 @@ export class MainScene extends Scene {
         this.score = 0;
         this.walls = [];
         this.bullets = [];
+        this.objects = [];
         this.player = new Player(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, 10, 10);
         this.player.addChild(Graphics.drawRect(0xFF3300, null, 0, 0, 10, 10));
         this.player.initPivot();
-        this.inventory = new Inventory();
         this.waitingNextWave = false;
         this.wave = new WaveManager(
             this,
@@ -38,18 +41,16 @@ export class MainScene extends Scene {
 
         this.wave.nextWave();
 
+        let inventory = new Inventory();
         let gun = new Gun();
-        let shotgun = new Shotgun();
-        let machineGun = new MachineGun();
-        this.inventory.add(new Item(gun, gun.name));
-        this.inventory.add(new Item(machineGun, machineGun.name));
-        this.inventory.add(new Item(shotgun, shotgun.name));
-
-        this.player.weapon = this.inventory.getCurrent().object;
-
-        //this.createWall(WINDOW_WIDTH / 4, 150, 100, 100);
+        inventory.add(new Item(gun, gun.name));
+        this.player.inventory = inventory;
 
         this.addChild(this.player);
+
+        setInterval(() => this.createAmmoPack(), 1 * 60 * 1000);
+        setInterval(() => this.createMedicPack(), 2 * 60 * 1000);
+        setInterval(() => this.createWeaponPack(), 3 * 60 * 1000);
     }
 
     refresh (game) {
@@ -67,12 +68,12 @@ export class MainScene extends Scene {
         }
 
         if (gamepad[KEY_N]) {
-            this.player.weapon = this.inventory.getNext().object;
+            this.player.inventory.getNext().object;
             gamepad[KEY_N] = false;
         }
 
         if (gamepad[KEY_B]) {
-            this.player.weapon = this.inventory.getPreviouse().object;
+            this.player.inventory.getPreviouse().object;
             gamepad[KEY_B] = false;
         }
 
@@ -87,6 +88,13 @@ export class MainScene extends Scene {
 
         this.player.move();
         this.player.follow(game.renderer.plugins.interaction.mouse.global);
+
+        let object = game.hasCollisionBetweenObjects(this.player, this.objects);
+
+        if (!!object) {
+            object.take(this.player);
+            this.removeObject(object);
+        }
 
         for (let bullet of this.bullets) {
             bullet.move();
@@ -137,6 +145,9 @@ export class MainScene extends Scene {
             this.wave.level++;
             this.waitingNextWave = true;
 
+            this.createAmmoPack();
+            this.createMedicPack();
+
             setTimeout(() => {
                 this.wave.nextWave();
                 this.waitingNextWave = false;
@@ -166,5 +177,40 @@ export class MainScene extends Scene {
             this.bullets.push(bullet);
             this.addChild(bullet);
         }
+    }
+
+    createMedicPack () {
+        let x = WINDOW_WIDTH / 2 + Utils.random(1, 100, true);
+        let y = WINDOW_HEIGHT / 2 + Utils.random(1, 100, true);
+        let medicPack = new MedicPack(x, y, 20, 20, loader.resources['medic-pack'].texture);
+        this.objects.push(medicPack);
+        this.addChild(medicPack);
+
+        setTimeou(() => this.removeObject(medicPack), 10 * 1000);
+    }
+
+    createAmmoPack () {
+        let x = WINDOW_WIDTH / 2 + Utils.random(1, 100, true);
+        let y = WINDOW_HEIGHT / 2 + Utils.random(1, 100, true);
+        let ammoPack = new AmmoPack(x, y, 20, 20, loader.resources['ammo-pack'].texture);
+        this.objects.push(ammoPack);
+        this.addChild(ammoPack);
+
+        setTimeou(() => this.removeObject(ammoPack), 10 * 1000);
+    }
+
+    createWeaponPack () {
+        let x = WINDOW_WIDTH / 2 + Utils.random(1, 100, true);
+        let y = WINDOW_HEIGHT / 2 + Utils.random(1, 100, true);
+        let weaponPack = new WeaponPack(x, y, 20, 20, loader.resources['weapon-pack'].texture);
+        this.objects.push(weaponPack);
+        this.addChild(weaponPack);
+
+        setTimeou(() => this.removeObject(weaponPack), 10 * 1000);
+    }
+
+    removeObject (object) {
+        this.removeChild(object);
+        this.objects.splice(this.objects.indexOf(object), 1);
     }
 }

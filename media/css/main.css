@@ -22,6 +22,10 @@ body > section > .menu {
     border-radius: 10px;
 }
 
+body > section > .menu > .start-game {
+    display: none;
+}
+
 body > section > .game {
     margin-top: 50px;
 }

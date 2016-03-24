@@ -2,8 +2,9 @@
 
 import {Game} from './bin/game';
 import {MainScene} from './scenes/main';
-import {WINDOW_WIDTH, WINDOW_HEIGHT} from './config/config';
+import {WINDOW_WIDTH, WINDOW_HEIGHT, ASSETS} from './config/config';
 import eventsManager from './services/events-manager';
+import loader from './services/loader';
 
 let menu = document.querySelector('.menu');
 let gameContainer = document.querySelector('.game');
@@ -16,6 +17,12 @@ let scoreCounter = document.querySelector('.hud .score');
 let meter = new FPSMeter(document.getElementById('fps'), { graph: true, heat: true });
 let game = null;
 let tickerinitialized = false;
+let gameIsReady = false;
+loader.on('complete', (loader) => {
+    startButton.style.display = 'block';
+    gameIsReady = true;
+});
+loader.loadAssets(ASSETS);
 
 /**
  * Init a new game
@@ -23,7 +30,10 @@ let tickerinitialized = false;
 function initGame () {
     game = new Game(WINDOW_WIDTH, WINDOW_HEIGHT, { antialias: true });
     game.renderer.backgroundColor = 0xffffff;
-    game.stage = new MainScene();
+
+    if (gameIsReady) {
+        startButton.style.display = 'block';
+    }
 
     if (!tickerinitialized) {
         game.ticker.add(() => {
@@ -48,6 +58,7 @@ function initGame () {
  */
 function startGame () {
     menu.className = 'menu hidden';
+    game.stage = new MainScene();
     game.start();
     gameContainer.className = 'game';
     gameContainer.appendChild(game.renderer.view);

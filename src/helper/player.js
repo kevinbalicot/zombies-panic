@@ -11,6 +11,15 @@ export class Player extends DisplayObject {
         this.life = life;
         this.maxLife = this.life;
         this.strength = strength;
+        this.inventory = null;
+    }
+
+    get weapon () {
+        if (this.inventory !== null) {
+            return this.inventory.getCurrent().object;
+        }
+
+        return null;
     }
 
     pushBy (object, power = 4) {
@@ -24,6 +33,16 @@ export class Player extends DisplayObject {
     }
 
     shoot () {
-        return this.weapon.shoot(new PIXI.Point(this.x, this.y), this.rotation, DIRECTION_UP);
+        return this.weapon !== null
+            ? this.weapon.shoot(new PIXI.Point(this.x, this.y), this.rotation, DIRECTION_UP)
+            : null;
+    }
+
+    heal (life) {
+        if (this.life + life >= this.maxLife) {
+            this.life = this.maxLife;
+        } else {
+            this.life += life;
+        }
     }
 }
